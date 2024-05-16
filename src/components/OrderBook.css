@@ -1,0 +1,59 @@
+.order-book-container {
+  text-align: center;
+  padding: 20px;
+  background-color: #1a1a1a;
+  color: white;
+}
+
+.order-book {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 20px;
+  background-color: #2e2e2e;
+  border-radius: 10px;
+}
+
+.order-book-column {
+  flex: 1;
+}
+
+.asks {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.bids {
+  background-color: rgba(0, 255, 0, 0.2);
+}
+
+.spread {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  text-align: right;
+}
+
+th {
+  background-color: #333;
+}
+
+td {
+  background-color: #444;
+}
+
+tbody tr:nth-child(odd) td {
+  background-color: #555;
+}
