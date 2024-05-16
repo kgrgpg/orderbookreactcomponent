@@ -5,55 +5,47 @@
   color: white;
 }
 
-.order-book {
+.order-book-single-column {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 20px;
+  justify-content: center;
   padding: 20px;
   background-color: #2e2e2e;
   border-radius: 10px;
 }
 
-.order-book-column {
-  flex: 1;
-}
-
-.asks {
-  background-color: rgba(255, 0, 0, 0.2);
-}
-
-.bids {
-  background-color: rgba(0, 255, 0, 0.2);
-}
-
-.spread {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #333;
-  padding: 10px;
-  border-radius: 10px;
-}
-
-table {
+.order-book-single-column table {
   width: 100%;
   border-collapse: collapse;
 }
 
-th, td {
+.order-book-single-column th,
+.order-book-single-column td {
   padding: 8px;
   text-align: right;
 }
 
-th {
+.order-book-single-column th {
   background-color: #333;
 }
 
-td {
+.order-book-single-column td {
   background-color: #444;
 }
 
-tbody tr:nth-child(odd) td {
+.order-book-single-column tbody tr:nth-child(odd) td {
   background-color: #555;
+}
+
+.order-book-single-column .asks {
+  background-color: rgba(255, 0, 0, 0.2);
+}
+
+.order-book-single-column .bids {
+  background-color: rgba(0, 255, 0, 0.2);
+}
+
+.spread-row {
+  background-color: #333;
+  color: white;
+  text-align: center;
 }

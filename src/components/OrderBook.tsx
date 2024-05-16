@@ -31,7 +31,7 @@ const OrderBook: React.FC = () => {
   useEffect(() => {
     const askOrders = generateOrders(20, 100, 0.01).reverse();
     const bidOrders = generateOrders(20, 100, -0.01);
-    const calculatedSpread = (askOrders[0].price - bidOrders[0].price).toFixed(5);
+    const calculatedSpread = (askOrders[askOrders.length - 1].price - bidOrders[0].price).toFixed(5);
 
     setAsks(askOrders);
     setBids(bidOrders);
@@ -41,50 +41,35 @@ const OrderBook: React.FC = () => {
   return (
     <div className="order-book-container">
       <h1>Order Book</h1>
-      <div className="order-book">
-        <div className="order-book-column asks">
-          <table>
-            <thead>
-              <tr>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Quantity</th>
+      <div className="order-book-single-column">
+        <table>
+          <thead>
+            <tr>
+              <th>Price</th>
+              <th>Quantity</th>
+              <th>Total Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+            {asks.map((order, index) => (
+              <tr key={`ask-${index}`}>
+                <td className="asks">{order.price.toFixed(5)}</td>
+                <td>{order.quantity.toFixed(5)}</td>
+                <td>{order.total.toFixed(5)}</td>
               </tr>
-            </thead>
-            <tbody>
-              {asks.map((order, index) => (
-                <tr key={index}>
-                  <td>{order.price.toFixed(5)}</td>
-                  <td>{order.quantity.toFixed(5)}</td>
-                  <td>{order.total.toFixed(5)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-        <div className="order-book-column spread">
-          <div>Spread: {spread} ({((spread / 100) * 100).toFixed(4)}%)</div>
-        </div>
-        <div className="order-book-column bids">
-          <table>
-            <thead>
-              <tr>
-                <th>Price</th>
-                <th>Quantity</th>
-                <th>Total Quantity</th>
+            ))}
+            <tr className="spread-row">
+              <td colSpan={3}>Spread: {spread} ({((spread / 100) * 100).toFixed(4)}%)</td>
+            </tr>
+            {bids.map((order, index) => (
+              <tr key={`bid-${index}`}>
+                <td className="bids">{order.price.toFixed(5)}</td>
+                <td>{order.quantity.toFixed(5)}</td>
+                <td>{order.total.toFixed(5)}</td>
               </tr>
-            </thead>
-            <tbody>
-              {bids.map((order, index) => (
-                <tr key={index}>
-                  <td>{order.price.toFixed(5)}</td>
-                  <td>{order.quantity.toFixed(5)}</td>
-                  <td>{order.total.toFixed(5)}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
