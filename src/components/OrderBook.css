@@ -1,77 +1,78 @@
 .order-book-container {
-  text-align: center;
+  margin: 20px;
   padding: 20px;
   background-color: #1a1a1a;
-  color: white;
+  border-radius: 10px;
+  color: #f0f0f0;
 }
 
 .order-book-single-column {
   display: flex;
-  justify-content: center;
-  padding: 20px;
-  background-color: #2e2e2e;
-  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
 }
 
-.order-book-single-column table {
+table {
   width: 100%;
   border-collapse: collapse;
 }
 
-.order-book-single-column th,
-.order-book-single-column td {
+th,
+td {
   padding: 8px;
   text-align: right;
+  border: 1px solid #444;
 }
 
-.order-book-single-column th {
+th {
   background-color: #333;
 }
 
-.order-book-single-column td {
+.asks {
   position: relative;
-  background-color: #444;
+  background-color: #600;
 }
 
-.order-book-single-column tbody tr:nth-child(odd) td {
-  background-color: #555;
+.asks.light-red {
+  background-color: #8b0000;
 }
 
-.order-book-single-column .asks td {
-  background-color: rgba(255, 0, 0, 0.2);
+.asks.dark-red {
+  background-color: #a52a2a;
 }
 
-.order-book-single-column .asks:nth-child(odd) td {
-  background-color: rgba(255, 0, 0, 0.4);
+.bids {
+  position: relative;
+  background-color: #060;
 }
 
-.order-book-single-column .bids td {
-  background-color: rgba(0, 255, 0, 0.2);
+.bids.light-green {
+  background-color: #006400;
 }
 
-.order-book-single-column .bids:nth-child(odd) td {
-  background-color: rgba(0, 255, 0, 0.4);
-}
-
-.order-book-single-column .bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  z-index: -1;
-  opacity: 0.5;
-}
-
-.order-book-single-column .asks .bar {
-  background-color: rgba(255, 0, 0, 0.5);
-}
-
-.order-book-single-column .bids .bar {
-  background-color: rgba(0, 255, 0, 0.5);
+.bids.dark-green {
+  background-color: #228b22;
 }
 
 .spread-row {
-  background-color: #333;
-  color: white;
   text-align: center;
+  background-color: #333;
+}
+
+.bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.2);
+  z-index: 0;
+}
+
+td {
+  position: relative;
+  z-index: 1;
+}
+
+tr:hover .bar {
+  background-color: rgba(255, 255, 255, 0.4);
 }

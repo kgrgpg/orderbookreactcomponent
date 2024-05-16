@@ -1,46 +1,73 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './OrderBook.css';
 
-interface Order {
-  price: number;
-  quantity: number;
-  total: number;
-}
+const OrderBook = () => {
+  const asks = [
+    { price: 100.19, quantity: 9.34, totalQuantity: 94.18 },
+    { price: 100.18, quantity: 2.34, totalQuantity: 91.44 },
+    { price: 100.17, quantity: 4.61, totalQuantity: 86.00 },
+    { price: 100.16, quantity: 7.14, totalQuantity: 78.86 },
+    { price: 100.15, quantity: 2.39, totalQuantity: 71.72 },
+    { price: 100.14, quantity: 6.39, totalQuantity: 69.33 },
+    { price: 100.13, quantity: 3.83, totalQuantity: 65.50 },
+    { price: 100.12, quantity: 5.80, totalQuantity: 61.67 },
+    { price: 100.11, quantity: 7.77, totalQuantity: 55.87 },
+    { price: 100.10, quantity: 4.21, totalQuantity: 48.10 },
+    { price: 100.09, quantity: 2.98, totalQuantity: 43.89 },
+    { price: 100.08, quantity: 3.90, totalQuantity: 40.90 },
+    { price: 100.07, quantity: 8.44, totalQuantity: 37.00 },
+    { price: 100.06, quantity: 2.77, totalQuantity: 28.56 },
+    { price: 100.05, quantity: 5.32, totalQuantity: 25.79 },
+    { price: 100.04, quantity: 3.65, totalQuantity: 20.47 },
+    { price: 100.03, quantity: 4.70, totalQuantity: 16.82 },
+    { price: 100.02, quantity: 5.12, totalQuantity: 12.12 },
+    { price: 100.01, quantity: 6.09, totalQuantity: 6.00 },
+  ];
 
-const generateOrders = (count: number, startPrice: number, priceIncrement: number): Order[] => {
-  const orders: Order[] = [];
-  let total = 0;
+  const bids = [
+    { price: 100.00, quantity: 6.00, totalQuantity: 6.00 },
+    { price: 99.99, quantity: 7.21, totalQuantity: 13.21 },
+    { price: 99.98, quantity: 3.56, totalQuantity: 16.77 },
+    { price: 99.97, quantity: 8.54, totalQuantity: 25.31 },
+    { price: 99.96, quantity: 2.39, totalQuantity: 27.70 },
+    { price: 99.95, quantity: 6.24, totalQuantity: 33.94 },
+    { price: 99.94, quantity: 4.89, totalQuantity: 38.83 },
+    { price: 99.93, quantity: 7.65, totalQuantity: 46.48 },
+    { price: 99.92, quantity: 5.32, totalQuantity: 51.80 },
+    { price: 99.91, quantity: 3.89, totalQuantity: 55.69 },
+    { price: 99.90, quantity: 2.55, totalQuantity: 58.24 },
+    { price: 99.89, quantity: 7.65, totalQuantity: 65.89 },
+    { price: 99.88, quantity: 6.32, totalQuantity: 72.21 },
+    { price: 99.87, quantity: 4.56, totalQuantity: 76.77 },
+    { price: 99.86, quantity: 3.12, totalQuantity: 79.89 },
+    { price: 99.85, quantity: 5.56, totalQuantity: 85.45 },
+    { price: 99.84, quantity: 6.77, totalQuantity: 92.22 },
+    { price: 99.83, quantity: 4.56, totalQuantity: 96.78 },
+    { price: 99.82, quantity: 3.45, totalQuantity: 100.23 },
+  ];
 
-  for (let i = 0; i < count; i++) {
-    const price = startPrice + i * priceIncrement;
-    const quantity = parseFloat((Math.random() * 10).toFixed(2));
-    total += quantity;
-    orders.push({ price, quantity, total });
-  }
+  // Calculate cumulative quantities
+  const cumulativeAsks = [...asks].reverse().map((ask, index, arr) => {
+    return {
+      ...ask,
+      cumulativeQuantity:
+        arr.slice(0, index + 1).reduce((sum, { quantity }) => sum + quantity, 0),
+    };
+  });
 
-  return orders;
-};
+  const cumulativeBids = bids.map((bid, index) => {
+    return {
+      ...bid,
+      cumulativeQuantity:
+        bids.slice(0, index + 1).reduce((sum, { quantity }) => sum + quantity, 0),
+    };
+  });
 
-const OrderBook: React.FC = () => {
-  const [asks, setAsks] = useState<Order[]>([]);
-  const [bids, setBids] = useState<Order[]>([]);
-  const [spread, setSpread] = useState<number>(0);
-
-  useEffect(() => {
-    const askOrders = generateOrders(20, 100, 0.01).reverse();
-    const bidOrders = generateOrders(20, 100, -0.01);
-    const calculatedSpread = (askOrders[askOrders.length - 1].price - bidOrders[0].price).toFixed(5);
-
-    setAsks(askOrders);
-    setBids(bidOrders);
-    setSpread(parseFloat(calculatedSpread));
-  }, []);
-
-  const maxQuantity = Math.max(
-    ...asks.map(order => order.quantity),
-    ...bids.map(order => order.quantity)
+  const maxCumulativeQuantity = Math.max(
+    ...cumulativeAsks.map((ask) => ask.cumulativeQuantity),
+    ...cumulativeBids.map((bid) => bid.cumulativeQuantity)
   );
 
   return (
@@ -56,33 +83,47 @@ const OrderBook: React.FC = () => {
             </tr>
           </thead>
           <tbody>
-            {asks.map((order, index) => (
-              <tr key={`ask-${index}`} className="asks">
+            {cumulativeAsks.reverse().map((ask, index) => (
+              <tr
+                key={index}
+                className={`asks ${index % 2 === 0 ? 'light-red' : 'dark-red'}`}
+              >
                 <td>
                   <div
                     className="bar"
-                    style={{ width: `${(order.quantity / maxQuantity) * 100}%` }}
+                    style={{
+                      width: `${
+                        (ask.cumulativeQuantity / maxCumulativeQuantity) * 100
+                      }%`,
+                    }}
                   ></div>
-                  {order.price.toFixed(5)}
+                  {ask.price}
                 </td>
-                <td>{order.quantity.toFixed(5)}</td>
-                <td>{order.total.toFixed(5)}</td>
+                <td>{ask.quantity.toFixed(2)}</td>
+                <td>{ask.totalQuantity.toFixed(2)}</td>
               </tr>
             ))}
             <tr className="spread-row">
-              <td colSpan={3}>Spread: {spread} ({((spread / 100) * 100).toFixed(4)}%)</td>
+              <td colSpan={3}>Spread: 0.19 (0.1900%)</td>
             </tr>
-            {bids.map((order, index) => (
-              <tr key={`bid-${index}`} className="bids">
+            {cumulativeBids.map((bid, index) => (
+              <tr
+                key={index}
+                className={`bids ${index % 2 === 0 ? 'light-green' : 'dark-green'}`}
+              >
                 <td>
                   <div
                     className="bar"
-                    style={{ width: `${(order.quantity / maxQuantity) * 100}%` }}
+                    style={{
+                      width: `${
+                        (bid.cumulativeQuantity / maxCumulativeQuantity) * 100
+                      }%`,
+                    }}
                   ></div>
-                  {order.price.toFixed(5)}
+                  {bid.price}
                 </td>
-                <td>{order.quantity.toFixed(5)}</td>
-                <td>{order.total.toFixed(5)}</td>
+                <td>{bid.quantity.toFixed(2)}</td>
+                <td>{bid.totalQuantity.toFixed(2)}</td>
               </tr>
             ))}
           </tbody>
