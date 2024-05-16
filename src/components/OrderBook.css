@@ -29,6 +29,7 @@
 }
 
 .order-book-single-column td {
+  position: relative;
   background-color: #444;
 }
 
@@ -36,12 +37,37 @@
   background-color: #555;
 }
 
-.order-book-single-column .asks {
+.order-book-single-column .asks td {
   background-color: rgba(255, 0, 0, 0.2);
 }
 
-.order-book-single-column .bids {
+.order-book-single-column .asks:nth-child(odd) td {
+  background-color: rgba(255, 0, 0, 0.4);
+}
+
+.order-book-single-column .bids td {
   background-color: rgba(0, 255, 0, 0.2);
+}
+
+.order-book-single-column .bids:nth-child(odd) td {
+  background-color: rgba(0, 255, 0, 0.4);
+}
+
+.order-book-single-column .bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: -1;
+  opacity: 0.5;
+}
+
+.order-book-single-column .asks .bar {
+  background-color: rgba(255, 0, 0, 0.5);
+}
+
+.order-book-single-column .bids .bar {
+  background-color: rgba(0, 255, 0, 0.5);
 }
 
 .spread-row {

@@ -38,6 +38,11 @@ const OrderBook: React.FC = () => {
     setSpread(parseFloat(calculatedSpread));
   }, []);
 
+  const maxQuantity = Math.max(
+    ...asks.map(order => order.quantity),
+    ...bids.map(order => order.quantity)
+  );
+
   return (
     <div className="order-book-container">
       <h1>Order Book</h1>
@@ -52,8 +57,14 @@ const OrderBook: React.FC = () => {
           </thead>
           <tbody>
             {asks.map((order, index) => (
-              <tr key={`ask-${index}`}>
-                <td className="asks">{order.price.toFixed(5)}</td>
+              <tr key={`ask-${index}`} className="asks">
+                <td>
+                  <div
+                    className="bar"
+                    style={{ width: `${(order.quantity / maxQuantity) * 100}%` }}
+                  ></div>
+                  {order.price.toFixed(5)}
+                </td>
                 <td>{order.quantity.toFixed(5)}</td>
                 <td>{order.total.toFixed(5)}</td>
               </tr>
@@ -62,8 +73,14 @@ const OrderBook: React.FC = () => {
               <td colSpan={3}>Spread: {spread} ({((spread / 100) * 100).toFixed(4)}%)</td>
             </tr>
             {bids.map((order, index) => (
-              <tr key={`bid-${index}`}>
-                <td className="bids">{order.price.toFixed(5)}</td>
+              <tr key={`bid-${index}`} className="bids">
+                <td>
+                  <div
+                    className="bar"
+                    style={{ width: `${(order.quantity / maxQuantity) * 100}%` }}
+                  ></div>
+                  {order.price.toFixed(5)}
+                </td>
                 <td>{order.quantity.toFixed(5)}</td>
                 <td>{order.total.toFixed(5)}</td>
               </tr>
